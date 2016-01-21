@@ -33,13 +33,13 @@ int main(){
     loadCsv(&sequences, "../data/data.csv");
     printSequences(&sequences);
 
-    //multiAlignment(sequences, 8);
+    //multiAlignment(&sequences);
     //alignSequences(sequences+3, sequences + 2);
     //alignSequencesSc(sequences + 4, sequences);
     printSequences(&sequences);
 
     /*float seuil = 0;
-    float * pw = calculateScore(sequences, 8, &seuil);
+    float * pw = calculateScore(&sequences, &seuil);
     cout << "Scores (seuil = " << seuil << ") : " << endl;
     for(unsigned int i = 0; i < 8; i++){
         cout << pw[i] << " | ";

@@ -1,7 +1,6 @@
 #ifndef CONTAINERS_UTILS
 #define CONTAINERS_UTILS
-#include <vector>
-#include <map>
+#include <QtCore>
 
 struct tuple{
     int i;
@@ -18,10 +17,14 @@ struct tuple{
     }
 };
 
-void addInMap(std::map<int, std::vector<tuple> > *, const int, const tuple);
-int min(std::map<int, std::vector<tuple> > *);
-int min(int * array, unsigned int size);
-bool isInto(std::vector< std::vector<tuple> >::iterator, tuple);
+inline bool operator==(const tuple a, const tuple b){
+    if(a.i==b.i && a.j==b.j) return true;
+    return false;
+}
+
+void addInMap(QMap<int, QVector<tuple> > *, const int, const tuple);
+int min(QMap<int, QVector<tuple> > *);
+int min(int array[], unsigned int size);
 
 #endif // CONTAINERS_UTILS
 
