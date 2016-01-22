@@ -11,7 +11,7 @@ private:
     QList<QStringList> _sequences;
 
     QList<QVector<int> > groupByLongestCommon();
-    void simpleAlignement(QStringList *a, QStringList * b);
+    void simpleAlignement(QStringList *a, QStringList * b, QSet<int> * posA, QSet<int> * posB, int aOffset = 0, int bOffset = 0);
 public:
     Aligner(QList<QStringList> sequences);
     void process();
