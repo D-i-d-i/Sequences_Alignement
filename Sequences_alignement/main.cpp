@@ -33,6 +33,16 @@ int main(){
     printSequences(&sequences);
 
     Aligner aligner(sequences);
+    aligner.process();
+
+
+
+
+
+
+
+
+
     int size, a, b;
     size = Helper::longuestCommon(&(sequences.at(0)), &(sequences.at(1)), &a, &b);
 

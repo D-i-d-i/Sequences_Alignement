@@ -1,6 +1,7 @@
 #ifndef ALIGNER_H
 #define ALIGNER_H
 #include <QtCore>
+#include <iostream>
 #include"helper.h"
 
 
