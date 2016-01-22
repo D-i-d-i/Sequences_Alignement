@@ -10,14 +10,14 @@ Helper::Helper()
 }
 
 /**
- * @brief longuestCommon sub sequence betwenn two
+ * @brief longestCommon sub sequence betwenn two
  * @param a : first sequence
  * @param b : second sequence
  * @param ia : indice on a where the subsequence begin
  * @param ib : indice on b where the subsequence begin
  * @return
  */
-int Helper::longuestCommon(const QStringList * a, const QStringList * b, int * ia, int * ib){
+int Helper::longestCommon(const QStringList * a, const QStringList * b, int * ia, int * ib){
     //If sequences are empty, return an emtpty longuest
     if(a->size()*b->size() == 0){
         return 0;

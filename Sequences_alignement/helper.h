@@ -14,7 +14,7 @@ class Helper
 {
 public:
     Helper();
-    static int longuestCommon(const QStringList * a, const QStringList * b, int * ia = NULL, int * ib = NULL);
+    static int longestCommon(const QStringList * a, const QStringList * b, int * ia = NULL, int * ib = NULL);
 };
 
 #endif // HELPER_H
