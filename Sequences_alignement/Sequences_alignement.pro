@@ -3,12 +3,13 @@ QT += core
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
+CONFIG += c++11
 
 SOURCES += main.cpp \
-    sequences.cpp \
-    containers_utils.cpp
+    aligner.cpp \
+    helper.cpp
 
 HEADERS += \
-    sequences.h \
-    containers_utils.h
+    aligner.h \
+    helper.h
 

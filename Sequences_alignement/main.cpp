@@ -3,10 +3,7 @@
 #include "aligner.h"
 #include "helper.h"
 
-#include <chrono>
-
 using namespace std;
-using namespace std::chrono;
 
 void printSequences(QList<QStringList> * sequences){
     for(QList<QStringList>::iterator it = sequences->begin(); it != sequences->end(); it++){
