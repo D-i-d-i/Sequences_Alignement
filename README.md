@@ -1,2 +1,2 @@
-# Sequences_Alignement
-Tests of algorithms for Sequences Alignement
+# Sequences_Alignment
+Tests of algorithms for Sequences Alignment
