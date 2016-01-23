@@ -16,6 +16,7 @@ public:
     Aligner(QList<QStringList> sequences);
     void process();
     QList<QStringList> getSequences();
+    void printSequence(const int indice);
     void printSequences();
 };
 

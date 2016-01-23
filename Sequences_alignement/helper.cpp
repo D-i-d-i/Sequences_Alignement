@@ -37,11 +37,11 @@ int Helper::longestCommon(const QStringList * a, const QStringList * b, int * ia
             nbIter = min(a->size(), b->size() - k);
         }
         for(int i = 0; i < nbIter; i++){
-            if(currentSize == 0){ //if it's the first time
-                memA = ta + i;
-                memB = tb + i;
-            }
-            if(a->at(ta+i) == b->at(tb+i)){ //if equal
+            if(a->at(ta+i) == b->at(tb+i) || a->at(ta+i) == EMPTY || b->at(tb+i) == EMPTY){ //if equal
+                if(currentSize == 0){ //if it's the first time
+                    memA = ta + i;
+                    memB = tb + i;
+                }
                 currentSize++;
             }else{
                 if(currentSize>size){ //save when greater

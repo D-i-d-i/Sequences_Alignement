@@ -45,31 +45,16 @@ void Aligner::simpleAlignement(QStringList *a, QStringList * b, QSet<int> *posA,
     int ia, ib;
     int subSize = Helper::longestCommon(a,b, &ia, &ib);
     if(subSize == 0){
-        if(a->size()<b->size()){
-            for(int i = 0; i<a->size(); i++){
-                posA->insert(aOffset + i);
-            }
-        }else{
-            for(int i = 0; i<b->size(); i++){
-                posB->insert(bOffset + i);
-            }
-        }
+        if(a->size()<b->size()) for(int i = 0; i<b->size()-a->size(); i++) posA->insert(aOffset + i);
+        else if(a->size()>b->size()) for(int i = 0; i<a->size()-b->size(); i++) posB->insert(bOffset + i);
     }else{
         QStringList la,ra,lb,rb;
-        for(int i = 0; i < ia; i++){
-            la << a->at(i);
-        }
-        for(int i = ia + subSize; i < a->size(); i++){
-            ra << a->at(i);
-        }
-        for(int i = 0; i < ib; i++){
-            lb << b->at(i);
-        }
-        for(int i = ib + subSize; i < b->size(); i++){
-            rb << b->at(i);
-        }
-        simpleAlignement(&la, &lb, posA, posB);
-        simpleAlignement(&ra, &rb, posA, posB, ia + subSize, ib + subSize);
+        for(int i = 0; i < ia; i++) la << a->at(i);
+        for(int i = ia + subSize; i < a->size(); i++) ra << a->at(i);
+        for(int i = 0; i < ib; i++) lb << b->at(i);
+        for(int i = ib + subSize; i < b->size(); i++) rb << b->at(i);
+        simpleAlignement(&la, &lb, posA, posB, aOffset, bOffset);
+        simpleAlignement(&ra, &rb, posA, posB, aOffset + ia + subSize, bOffset + ib + subSize);
     }
 }
 
@@ -78,32 +63,30 @@ void Aligner::process(){
     QList<QVector<int> > group = groupByLongestCommon();
     QList<QSet<int> > * positions;
     QSet<int> tmpa, tmpb;
-    for(QList<QVector<int> >::iterator it = group.begin(); it != group.end(); it++){
-        tmpa.clear();
-        tmpb.clear();
-        positions = new QList<QSet<int> >[it->size()];
-        for(int j = 0; j < it->size() - 1; j++){
-            for(int i = 1; i < it->size(); i++){
-                simpleAlignement(&(_sequences[it->at(j)]), &(_sequences[it->at(i)]),&tmpa,&tmpb);
-                positions[j].append(tmpa);
-                positions[i].append(tmpb);
+    do{
+        for(QList<QVector<int> >::iterator it = group.begin(); it != group.end(); it++){
+            positions = new QList<QSet<int> >[it->size()];
+            for(int j = 0; j < it->size() - 1; j++){
+                for(int i = j + 1; i < it->size(); i++){
+                    tmpa.clear();
+                    tmpb.clear();
+                    simpleAlignement(&(_sequences[it->at(j)]), &(_sequences[it->at(i)]),&tmpa,&tmpb);
+                    if(!tmpa.isEmpty()) positions[j].append(tmpa);
+                    if(!tmpb.isEmpty()) positions[i].append(tmpb);
+                }
+            }
+            for(int i = 0; i < it->size(); i++){
+                tmpa.clear();
+                for(int j = 0; j < positions[i].size(); j++){
+                    if(tmpa.isEmpty()) tmpa = positions[i][j];
+                    else tmpa = tmpa.intersect(positions[i][j]);
+                }
+                for(QSet<int>::iterator sit = tmpa.begin(); sit != tmpa.end(); sit++)  _sequences[it->at(i)].insert(*sit, EMPTY);
             }
         }
-        for(int i = 0; i < it->size(); i++){
-            cout << it->at(i) << " " << endl;
-            if(positions[i].isEmpty()) continue;
-            tmpa = positions[i].first();
-            for(int j = 1; j < positions[i].size(); j++){
-                tmpa = tmpa.intersect(positions[i][j]);
-            }
-            for(QSet<int>::iterator sit = tmpa.begin(); sit != tmpa.end(); sit++){
-                cout << "insert empty for " << it->at(i) << " the value " << *sit<< endl;
-                _sequences[it->at(i)].insert(*sit, EMPTY);
-                cout << endl;
-            }
-        }
-        cout <<"next it" << endl;
-    }
+        group[1] += group[0];
+        group.removeFirst();
+    }while(group.size()>1);
     printSequences();
 }
 
@@ -111,13 +94,13 @@ QList<QStringList> Aligner::getSequences(){
     return _sequences;
 }
 
+void Aligner::printSequence(const int indice){
+    for(QStringList::iterator sit = _sequences[indice].begin(); sit != _sequences[indice].end(); sit++) cout << sit->toStdString();
+    cout << endl;
+}
+
 void Aligner::printSequences(){
     if(_sequences.isEmpty()) return;
-    for(QList<QStringList>::iterator it = _sequences.begin(); it != _sequences.end(); it++){
-        for(QStringList::iterator sit = it->begin(); sit != it->end(); sit++){
-            cout << sit->toStdString();
-        }
-        cout << endl;
-    }
+    for(int i = 0; i < _sequences.size(); i++) printSequence(i);
     cout << endl;
 }
